@@ -11,18 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('/list', function () {
-    return view('partials.table');
-});
-Route::get('/create', function () {
-    return view('create');
-});
-Route::get('/edit', function () {
-    return view('edit');
-});
+	Route::resource('/usuarios/usuario', 'UsuarioController');
+
+	Route::get('/', 'UsuarioController@index');
+	Route::get('/list', 'UsuarioController@show');
+	Route::get('/myedit', 'UsuarioController@myedit');
+	Route::get('/create', 'UsuarioController@create');
+	Route::post('/edit/(id)', 'UsuarioController@edit');
+	Route::get('/delete/(id)', 'UsuarioController@destroy');
+	Route::post('/enviar', 'UsuarioController@store');
+	Route::post('/logar', 'UsuarioController@logger');
 
 
-Route::resource('usuario', 'UsuarioController');
+
+
