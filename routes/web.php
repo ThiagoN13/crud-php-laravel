@@ -11,16 +11,15 @@
 |
 */
 
-	Route::resource('/usuarios/usuario', 'UsuarioController');
+	Route::resource('usuario', 'UsuarioController');
 
 	Route::get('/', 'UsuarioController@index');
 	Route::get('/list', 'UsuarioController@show');
-	Route::get('/myedit', 'UsuarioController@myedit');
 	Route::get('/create', 'UsuarioController@create');
-	Route::post('/edit/(id)', 'UsuarioController@edit');
-	Route::get('/delete/(id)', 'UsuarioController@destroy');
+	Route::post('/delete', 'UsuarioController@destroy');
 	Route::post('/enviar', 'UsuarioController@store');
 	Route::post('/logar', 'UsuarioController@logger');
+	Route::post('/update', 'UsuarioController@update');
 
 
 

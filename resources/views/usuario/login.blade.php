@@ -1,6 +1,6 @@
-@extends('usuario.template')
+@extends('index')
 
-@section('content')
+@section('conteudo')
 
 <div class="container">
 	<h1>Controle de acesso</h1>

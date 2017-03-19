@@ -10,33 +10,26 @@ class UsuarioController extends Controller
 
   public function index()
      {
-        // $usuarios = Usuario::get();
-        // return view('table')->with($usuario);
-        // return view('usuario.login',compact('usuarios'));
         return view('usuario.login');
     }
 
- public function create()
+ public function create(Request $request)
     {
-        return view('usuario.create');
+        $usuario = $request->session()->get('key');
+        return view('usuario.create', compact(['usuario']));
     }
 
   public function show(Request $request)
      {
-        $value = $request->session()->get('key');
-        if($value && $value->tipo_usuario == 1){
-            $usuarios = Usuario::get();
-        return view('usuario.table', compact(['usuarios','value']));
-        //return view('usuario.table')->with("usuarios", $usuarios);
-        } else {
-            return redirect()->route('usuario.index');
-        }
+        $usuario = $request->session()->get('key');
+        $usuarios = Usuario::get();
+        return view('usuario.table', compact(['usuarios','usuario']));
      }
 
 
   public function store(Request $request, \App\Usuario $usuario)
     {
-        $usuario->nome  = $request->input('nome');
+       $usuario->nome  = $request->input('nome');
        $usuario->email= $request->input('email');
        $usuario->descricao = $request->input('descricao');
        $usuario->senha = bcrypt($request->input('senha'));
@@ -52,11 +45,8 @@ class UsuarioController extends Controller
     }
 
 
-  public function edit($id)
-    {
 
 
-    }
 
     public function logger(Request $request)
     {
@@ -66,61 +56,52 @@ class UsuarioController extends Controller
         forEach($user as $value)
         if(crypt($senha, $value->senha) === $value->senha){
             $request->session()->put('key', $value);
-
-            return 'Usuario logado';
+            $usuario = $request->session()->get('key');
+            return view('template', compact(['usuario']));
         }
         else {
             return 'Login e senha incorretas';
         }
-       
 
-        
     }
 
-  public function update(Request $request, $id)
+  public function update(Request $request)
     {
-        if($value && $value->tipo_usuario == 1){
-           $update = Usuario::find($id);
-           $update->nome  = $request->input('nome');
-           $update->email= $request->input('email');
-           $update->descricao = $request->input('descricao');
-           $update->senha = bcrypt($request->input('senha'));
+       $update = Usuario::find($request->input('id'));
+       $update->nome  = $request->input('nome');
+       $update->email= $request->input('email');
+       $update->descricao = $request->input('descricao');
+       $update->senha = bcrypt($request->input('senha'));
 
-            $update->save();
-            if($update){
-                 return redirect()->route('usuario.index');
-            } else {
-                return redirect()->route('usuario.login');
-            }
+        $update->save();
+        if($update){
+             return redirect()->route('usuario.table');
+        } else {
+            return redirect()->route('usuario.table');
         }
 
     }
 
 
-  public function destroy($id)
+  public function destroy(Request $request)
     {
-        if($value && $value->tipo_usuario == 1){
-             Usuario::destroy($id);
-            //return redirect()->route('usuario.table');
-            return 'Removido';
-        }else {
-            return redirect()->route('usuario.index');
-        }
-       
+      $id  = $request->input('id');
+      Usuario::destroy($id);
+      return redirect()->route('usuario.table');
+
     }
 
-   public function myedit()
+   public function edit($id, Request $request)
     {
-        return $id;
-        //Usuario::destroy($id);
-        //return redirect()->route('usuario.table');
-    } 
+        $usuario = $request->session()->get('key');
+        $user = Usuario::where('id' , $id)->get();
+        return view('usuario.fields', compact(['user', 'usuario']));
+    }
 
-    public function logout()
+    public function logout(Request $request)
     {
         $request->session()->forget('key');
-
         return redirect()->route('usuario.login');
-    } 
+    }
 
 }

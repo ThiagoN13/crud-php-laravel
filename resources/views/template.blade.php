@@ -7,6 +7,7 @@
     <script src="./js/jquery-3.2.0.js"></script>
   </head>
   <body>
+
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -14,12 +15,12 @@
         </div>
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Home</a></li>
+            <li><a href="/usuario/{{ $usuario->id }}/edit">Editar informações</a></li>
           <li><a href="/create">Criar usuario</a></li>
-          <li><a href="/myedit">Editar informações</a></li>
           <li><a href="/list">Listar usuario</a></li>
         </ul>
-        <ul class="pull right">
-          <li><a href="">Sair</a></li>
+        <ul class="pull-right nav navbar-nav">
+          <li><a href="/usuario/logout">Sair</a></li>
         </ul>
       </div>
     </nav>

@@ -1,10 +1,10 @@
-@extends('usuario.template')
+@extends('template')
 
 @section('content')
 
 <div class="container">
     <h1>Lista de usuarios</h1>
-    <span>Bem vindo {{$value}}</span>
+    <span>Bem vindo {{$usuario->nome}}</span>
     <table class="table  table-hover" id="MyTable">
       <thead>
         <tr>
@@ -18,15 +18,23 @@
       </thead>
       <tbody>
       @foreach($usuarios as $user)
-                <tr>
-                    <td class="text-center">{{$user->id}}</td>
-                    <td class="text-center">{{$user->nome}}</td>
-                    <td class="text-center">{{$user->email}}</td>
-                    <td class="text-center">{{$user->descricao}}</td>
-                    <td class="text-center"><a style="color: red;" href="/delete/{{$user->id}}"> <img src="./img/remove.png" width="20px" height="17px"></i></a></td>
+            <tr>
+                <td class="text-center">{{$user->id}}</td>
+                <td class="text-center">{{$user->nome}}</td>
+                <td class="text-center">{{$user->email}}</td>
+                <td class="text-center">{{$user->descricao}}</td>
+                <td class="text-center">
+                <form action="/delete" method="POST">
+                    <input type="hidden" name="id" value="{{ $user->id }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <button class="btn btn-default" type="submit" value="delete">
+                        <img src="./img/remove.png" width="15px" height="14px"></img>
+                    </button>
+                </td>
+                </form>
 
-                    <td class="text-center"> <a style="color: gray;" href="{{url('edit/($user->id)')}}" data-target="#form" data-toggle="modal"> <img src="./img/editar.png" width="20px" height="17px"></a> </td>
-                </tr>
+                <td class="text-center"><a href="/usuario/{{ $user->id }}/edit" class="btn btn-default"><img src="./img/editar.png" width="15px" height="14px"> </a></td>
+            </tr>
         @endforeach
       </tbody>
     </table>
