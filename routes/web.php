@@ -14,12 +14,15 @@
 	Route::resource('usuario', 'UsuarioController');
 
 	Route::get('/', 'UsuarioController@index');
-	Route::get('/list', 'UsuarioController@show');
 	Route::get('/create', 'UsuarioController@create');
-	Route::post('/delete', 'UsuarioController@destroy');
 	Route::post('/enviar', 'UsuarioController@store');
 	Route::post('/logar', 'UsuarioController@logger');
-	Route::post('/update', 'UsuarioController@update');
+	Route::post('/delete', 'UsuarioController@destroy');
+   	Route::post('/update', 'UsuarioController@update');
+   	Route::get('/list', 'UsuarioController@show');
+   	Route::get('/logout', 'UsuarioController@logout');
+
+
 
 
 

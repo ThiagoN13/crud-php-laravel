@@ -53,14 +53,15 @@ class UsuarioController extends Controller
         $email= $request->input('email');
         $senha = $request->input('senha');
         $user = Usuario::where('email' , $email)->get();
-        forEach($user as $value)
-        if(crypt($senha, $value->senha) === $value->senha){
+        forEach($user as $value){
+          if(crypt($senha, $value->senha) === $value->senha){
             $request->session()->put('key', $value);
             $usuario = $request->session()->get('key');
             return view('template', compact(['usuario']));
-        }
-        else {
-            return 'Login e senha incorretas';
+         }
+        } if($user){
+            return "Seu email ou senha estão incorretos<br/>
+            <a href='/'>Clique aqui para voltar</a>";
         }
 
     }
@@ -72,12 +73,12 @@ class UsuarioController extends Controller
        $update->email= $request->input('email');
        $update->descricao = $request->input('descricao');
        $update->senha = bcrypt($request->input('senha'));
-
-        $update->save();
-        if($update){
-             return redirect()->route('usuario.table');
+       $usuario = $request->session()->get('key');
+       $update->save();
+       if($update){
+          return view('template', compact(['usuario']));
         } else {
-            return redirect()->route('usuario.table');
+          return view('template', compact(['usuario']));
         }
 
     }
@@ -87,7 +88,9 @@ class UsuarioController extends Controller
     {
       $id  = $request->input('id');
       Usuario::destroy($id);
-      return redirect()->route('usuario.table');
+      $usuario = $request->session()->get('key');
+      return view('template', compact(['usuario']));
+
 
     }
 
@@ -100,8 +103,8 @@ class UsuarioController extends Controller
 
     public function logout(Request $request)
     {
-        $request->session()->forget('key');
-        return redirect()->route('usuario.login');
+        $request->session()->flush();
+        return view('index');
     }
 
 }

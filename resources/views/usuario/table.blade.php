@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="container">
     <h1>Lista de usuarios</h1>
     <span>Bem vindo {{$usuario->nome}}</span>
@@ -12,6 +13,7 @@
             <th class="text-center">Nome</th>
             <th class="text-center">Email</th>
             <th class="text-center">Descrição</th>
+            <th class="text-center">Permissões</th>
             <th class="text-center">Excluir</th>
             <th class="text-center">Editar</th>
         </tr>
@@ -23,6 +25,11 @@
                 <td class="text-center">{{$user->nome}}</td>
                 <td class="text-center">{{$user->email}}</td>
                 <td class="text-center">{{$user->descricao}}</td>
+                <td class="text-center">
+                    @if($user->tipo_usuario == 1) Administrador
+                    @else Membro
+                    @endif
+                </td>
                 <td class="text-center">
                 <form action="/delete" method="POST">
                     <input type="hidden" name="id" value="{{ $user->id }}">
@@ -41,3 +48,4 @@
 </div>
 
 @endsection
+
